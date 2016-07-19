@@ -48,11 +48,15 @@ class GameScene: SKScene {
         didSet {
             //  beardx.yScale = growth
         }
+        
     }
+    var levelTimerLabel: SKLabelNode!
     
-    
-    
-    
+    var levelTimerValue : Int = 500 {
+        didSet {
+            levelTimerLabel.text = "Time left: \(levelTimerValue)"
+        }
+    }
     
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
@@ -65,6 +69,7 @@ class GameScene: SKScene {
         playButton = childNodeWithName("playButton") as! MSButtonNode
         restartButton = childNodeWithName("//restartButton") as! MSButtonNode
         scoreLabel = self.childNodeWithName("scoreLabel") as! SKLabelNode
+        levelTimerLabel = self.childNodeWithName("//levelTimerLabel") as! SKLabelNode
         //scoreLabel.text = String(points)
         //Play button
         playButton.selectedHandler = {
@@ -75,13 +80,33 @@ class GameScene: SKScene {
         restartButton.selectedHandler = {
             self.state = .Title
         }
-       // beardx = childNodeWithName("beardx") as! SKSpriteNode
+        // beardx = childNodeWithName("beardx") as! SKSpriteNode
         
         
+        //timer
+        levelTimerLabel.fontColor = SKColor.blackColor()
+        levelTimerLabel.fontSize = 40
+        levelTimerValue = 60
+
+        
+        let wait = SKAction.waitForDuration(0.5) //change countdown speed here
+        let block = SKAction.runBlock({
+            [unowned self] in
+            if self.levelTimerValue > 0{
+                self.levelTimerValue -= 1
+            }else{
+                self.removeActionForKey("countdown")
+            }
+            })
+        
+        let sequence = SKAction.sequence([wait, block])
+        self.runAction(SKAction.repeatActionForever(sequence))
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         /* Called when a touch begins */
+        
+        if actionForKey("countdown") != nil {removeActionForKey("countdown")}
         
         if state == .GameOver || state == .Title {return}
         
@@ -140,7 +165,6 @@ class GameScene: SKScene {
          }
          */
         
-        
     }
     
     
@@ -161,6 +185,13 @@ class GameScene: SKScene {
                 directionup = true
             }
         }
+        
+        if health >= 0.35 && health < 0.65 {
+            healthBar.color = SKColor.greenColor()
+        }  else {
+            healthBar.color = SKColor.redColor()
+        }
+        
         
         //growth += 1
         
