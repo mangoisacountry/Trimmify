@@ -130,25 +130,16 @@ class GameScene: SKScene {
                 switch name {
             //variable every time decrease
                 case "spot1":
-                    alphaspot1 -= 0.10
-                    touchedNode.runAction(
-                    SKAction.fadeAlphaTo(alphaspot1, duration: 2))
-                case "spot2":
-                    alphaspot2 -= 0.10
-                    touchedNode.runAction(
-                    SKAction.fadeAlphaTo(alphaspot2, duration: 2))
-                case "spot3":
-                    
                     touchedNode.alpha -= 0.10
-                   // SKAction.fadeAlphaTo(alphaspot3, duration:2))
+                case "spot2":
+                    touchedNode.alpha -= 0.10
+                case "spot3":
+                    touchedNode.alpha -= 0.10
                 case "spot4":
-                    alphaspot4 -= 0.10
-                    touchedNode.runAction(
-                    SKAction.fadeAlphaTo(alphaspot4, duration: 2))
+                    touchedNode.alpha -= 0.10
                 default:
                     break;
                 }
-                print(health)
                 if health >= 0.4 && health <= 0.6 {
                     points += 5
                     
