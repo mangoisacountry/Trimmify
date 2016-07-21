@@ -24,10 +24,10 @@ class GameScene: SKScene {
     // var state: BarState = .Up
     // var state: BarState = .Down
     // var state: BarState = .Stop
-    var spot1:SKShapeNode!
-    var spot2:SKShapeNode!
-    var spot3:SKShapeNode!
-    var spot4:SKShapeNode!
+    var spot1:SKSpriteNode!
+    var spot2:SKSpriteNode!
+    var spot3:SKSpriteNode!
+    var spot4:SKSpriteNode!
     var playButton:MSButtonNode!
     var restartButton:MSButtonNode!
     var healthBar:SKSpriteNode!
@@ -56,15 +56,19 @@ class GameScene: SKScene {
         didSet {
             levelTimerLabel.text = "Time left: \(levelTimerValue)"
         }
+
     }
-    
+    var alphaspot1:CGFloat = 1
+    var alphaspot2:CGFloat = 1
+    var alphaspot3:CGFloat = 1
+    var alphaspot4:CGFloat = 1
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
         beard1 = childNodeWithName("beard1") as! SKSpriteNode
-        spot1 = childNodeWithName("//spot1") as! SKShapeNode
-        spot2 = childNodeWithName("//spot2") as! SKShapeNode
-        spot3 = childNodeWithName("//spot3") as! SKShapeNode
-        spot4 = childNodeWithName("//spot4") as! SKShapeNode
+        spot1 = childNodeWithName("//spot1") as! SKSpriteNode
+        spot2 = childNodeWithName("//spot2") as! SKSpriteNode
+        spot3 = childNodeWithName("//spot3") as! SKSpriteNode
+        spot4 = childNodeWithName("//spot4") as! SKSpriteNode
         healthBar = childNodeWithName("//healthBar") as! SKSpriteNode
         playButton = childNodeWithName("playButton") as! MSButtonNode
         restartButton = childNodeWithName("//restartButton") as! MSButtonNode
@@ -122,21 +126,25 @@ class GameScene: SKScene {
             
             if let name = touchedNode.name
             {
-                
+                print(name)
                 switch name {
-                    
+            //variable every time decrease
                 case "spot1":
-                    print("spot 1 touched")
-                    break;
+                    alphaspot1 -= 0.10
+                    touchedNode.runAction(
+                    SKAction.fadeAlphaTo(alphaspot1, duration: 2))
                 case "spot2":
-                    print("spot 2 touched")
-                    break;
+                    alphaspot2 -= 0.10
+                    touchedNode.runAction(
+                    SKAction.fadeAlphaTo(alphaspot2, duration: 2))
                 case "spot3":
-                    print("spot 3 touched")
-                    break;
+                    alphaspot3 -= 0.10
+                    touchedNode.runAction(
+                    SKAction.fadeAlphaTo(alphaspot3, duration: 2))
                 case "spot4":
-                    print("spot 4 touched")
-                    break;
+                    alphaspot4 -= 0.10
+                    touchedNode.runAction(
+                    SKAction.fadeAlphaTo(alphaspot4, duration: 2))
                 default:
                     break;
                 }
