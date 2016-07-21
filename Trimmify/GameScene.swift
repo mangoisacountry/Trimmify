@@ -138,9 +138,9 @@ class GameScene: SKScene {
                     touchedNode.runAction(
                     SKAction.fadeAlphaTo(alphaspot2, duration: 2))
                 case "spot3":
-                    alphaspot3 -= 0.10
-                    touchedNode.runAction(
-                    SKAction.fadeAlphaTo(alphaspot3, duration: 2))
+                    
+                    touchedNode.alpha -= 0.10
+                   // SKAction.fadeAlphaTo(alphaspot3, duration:2))
                 case "spot4":
                     alphaspot4 -= 0.10
                     touchedNode.runAction(
@@ -194,8 +194,8 @@ class GameScene: SKScene {
             }
         }
         
-        if health >= 0.35 && health < 0.65 {
-            healthBar.color = SKColor.greenColor()
+        if health <= 0.50 {
+            healthBar.color = SKColor(red: 0.0, green: 1.0, blue: 0.0, alpha: 1.0)
         }  else {
             healthBar.color = SKColor.redColor()
         }
