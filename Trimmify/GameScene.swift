@@ -11,14 +11,14 @@ import SpriteKit
 enum GameState {
     case Title, Ready, Playing, Stop, GameOver
 }
-enum BarState {
-    case Up, Down, Stop
-}
+//enum BarState {
+//    case Up, Down, Stop
+//}
 
 
 class GameScene: SKScene {
     
-    
+    var touchedNode: SKNode! = nil
     var beard1:SKSpriteNode!
     var state: GameState = .Title
     // var state: BarState = .Up
@@ -44,9 +44,9 @@ class GameScene: SKScene {
             scoreLabel.text = String(points)
         }
     }
-    var beardx: SKSpriteNode! {
+    var growth: CGFloat = 1.0 {
         didSet {
-            //  beardx.yScale = growth
+        spot1.yScale = growth
         }
         
     }
@@ -79,7 +79,7 @@ class GameScene: SKScene {
         playButton.selectedHandler = {
             
             /* Start game */
-            self.state = .Ready
+            self.state = .Playing
         }
         restartButton.selectedHandler = {
             self.state = .Title
@@ -90,7 +90,7 @@ class GameScene: SKScene {
         //timer
         levelTimerLabel.fontColor = SKColor.blackColor()
         levelTimerLabel.fontSize = 40
-        levelTimerValue = 60
+        levelTimerValue = 75
 
         
         let wait = SKAction.waitForDuration(0.5) //change countdown speed here
@@ -105,6 +105,10 @@ class GameScene: SKScene {
         
         let sequence = SKAction.sequence([wait, block])
         self.runAction(SKAction.repeatActionForever(sequence))
+   
+    
+    
+    
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -122,7 +126,7 @@ class GameScene: SKScene {
         for touch in touches {
             
             let positionInScene = touch.locationInNode(self)
-            let touchedNode = self.nodeAtPoint(positionInScene)
+            touchedNode = self.nodeAtPoint(positionInScene)
             
             if let name = touchedNode.name
             {
@@ -155,22 +159,40 @@ class GameScene: SKScene {
             
         }
         
-        /* write code for gameover state here
-         if beard1.spot1,2,3,4 is longer beyond certain length ==
-         
-         
-         gameOver()
-         return
-         }
-         */
-        
     }
     
     
     override func update(currentTime: CFTimeInterval) {
+        
+        if state == .Ready {
+            spot1.size.height += 0.2
+            spot1.position.y -= 0.03
+            spot2.size.height += 0.2
+            spot2.position.y -= 0.1
+
+            spot3.size.height += 0.2
+            spot3.position.y -= 0.1
+            spot4.size.height += 0.2
+
+            spot4.position.y -= 0.03
+
+        }
         /* Called before each frame is rendered */
         if state != .Playing { return }
         
+        spot1.size.height += 0.5
+        spot1.position.y -= 0.025
+        
+        spot2.size.height += 0.2
+        spot2.position.y -= 0.1
+        
+        spot3.size.height += 0.2
+        spot3.position.y -= 0.1
+        
+        spot4.size.height += 0.5
+        spot4.position.y -= 0.025
+        
+        print(spot2.position.y)
         
         
         if directionup {
@@ -190,24 +212,37 @@ class GameScene: SKScene {
         }  else {
             healthBar.color = SKColor.redColor()
         }
+        if levelTimerValue == 0 {
+            gameOver()
+        }
+        if touchedNode == nil {
+            return
+        }
+        print(touchedNode.alpha)
+        if spot1.position.y < 77.110 || spot2.position.y < 77.110 || spot3.position.y < 77.110 || spot4.position.y < 77.110 || touchedNode.alpha <= 0.01   {
+            gameOver()
+        }
         
-        
-        //growth += 1
         
         
     }
     
-    //
-    //
-    //
-    //        //Has the player run out of health?
-    //        if health < 0 {
-    //            //gameOver()
-    //        } else if health > 0 {
-    //            //gameOver()
-    //        }
+    func gameOver() {
+    print("gameover!")
+    state = .GameOver
+//    for node:spot 1 in beard1{
+//    node.runAction(SKAction.colorizeWithColor(UIColor.redColor(), colorBlendFactor: 1.0, duration: 0.50))
+//    }
     
+beard1.runAction(SKAction.colorizeWithColor(UIColor.redColor(), colorBlendFactor: 1.0, duration: 0.50))
     
+//    playButton.selectionHandler = {
+//        let skView = self.view as SKView!
+//    
+//    
+//        skView.presentScene(scene)
+//    
+//    }
 }
 
 
@@ -215,23 +250,5 @@ class GameScene: SKScene {
 
 
 
-/*func gameOver()
- 
- state = .GameOver
- for node:spot 1 in beard1{
- node.runAction(SKAction.colorizeWithColor(UIColor.redColor(), colorBlendFactor: 1.0, duration: 0.50))
- }
- 
- beard1.runAction(SKAction.colorizeWithColor(UIColor.redColor(), colorBlendFactor: 1.0, duration: 0.50))
- 
- playButton.selectionHandler = {
- let skView = self.view as SKView!
- 
- let scene = GameScene(fileNamed:"GameScene") as GameScene!
- scene.scaleMode = .AspectFill
- 
- skView.presentScene(scene)
- 
- }
- */
 
+}
