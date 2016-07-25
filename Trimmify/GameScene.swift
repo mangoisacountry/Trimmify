@@ -54,7 +54,8 @@ class GameScene: SKScene {
     
     var levelTimerValue : Int = 500 {
         didSet {
-            levelTimerLabel.text = "Time left: \(levelTimerValue)"
+            levelTimerLabel.text = " \(levelTimerValue)"
+            levelTimerLabel.fontColor = SKColor.blueColor()
         }
 
     }
@@ -62,6 +63,11 @@ class GameScene: SKScene {
     var alphaspot2:CGFloat = 1
     var alphaspot3:CGFloat = 1
     var alphaspot4:CGFloat = 1
+    var sinceTouch : CFTimeInterval = 0
+    let fixedDelta: CFTimeInterval = 1.0/60.0 /* 60 FPS */
+    var maskNode: SKNode?
+    var cropNode: SKCropNode = SKCropNode()
+
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
         beard1 = childNodeWithName("beard1") as! SKSpriteNode
@@ -105,15 +111,13 @@ class GameScene: SKScene {
         
         let sequence = SKAction.sequence([wait, block])
         self.runAction(SKAction.repeatActionForever(sequence))
-   
     
     
     
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        /* Called when a touch begins */
-        
+         //Called when a touch begins
         if actionForKey("countdown") != nil {removeActionForKey("countdown")}
         
         if state == .GameOver || state == .Title {return}
@@ -124,6 +128,14 @@ class GameScene: SKScene {
         
         
         for touch in touches {
+        
+            spot1.size.height -= 0.5
+            
+            spot2.size.height -= 0.2
+            
+            spot3.size.height -= 0.2
+            
+            spot4.size.height -= 0.5
             
             let positionInScene = touch.locationInNode(self)
             touchedNode = self.nodeAtPoint(positionInScene)
@@ -134,13 +146,18 @@ class GameScene: SKScene {
                 switch name {
             //variable every time decrease
                 case "spot1":
-                    touchedNode.alpha -= 0.10
+                    spot1.size.height -= 10
+                    spot1.position.y += 1
+                    print(spot1.size.height)
                 case "spot2":
-                    touchedNode.alpha -= 0.10
+                    spot2.size.height -= 10
+                    spot2.position.y += 1
                 case "spot3":
-                    touchedNode.alpha -= 0.10
+                    spot3.size.height -= 10
+                    spot3.position.y += 1
                 case "spot4":
-                    touchedNode.alpha -= 0.10
+                    spot4.size.height -= 10
+                    spot4.position.y += 1
                 default:
                     break;
                 }
@@ -158,7 +175,12 @@ class GameScene: SKScene {
             }
             
         }
-        
+        //cropNode.maskNode = SKSpriteNode(imageNamed: "cockpitMask")
+//        cropNode.maskNode = SKSpriteNode(color: UIColor.blackColor(), size: CGSize(width: 100, height: 100))
+//        cropNode.addChild(touchedNode.parent!)
+//        self.addChild(cropNode)
+        //self.addChild(gameControlNodes)
+
     }
     
     
@@ -192,7 +214,9 @@ class GameScene: SKScene {
         spot4.size.height += 0.5
         spot4.position.y -= 0.025
         
-        print(spot2.position.y)
+    playButton.hidden = true
+        
+       
         
         
         if directionup {
@@ -235,6 +259,8 @@ class GameScene: SKScene {
 //    }
     
 beard1.runAction(SKAction.colorizeWithColor(UIColor.redColor(), colorBlendFactor: 1.0, duration: 0.50))
+        
+sinceTouch+=fixedDelta
     
 //    playButton.selectionHandler = {
 //        let skView = self.view as SKView!
