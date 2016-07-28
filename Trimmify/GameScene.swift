@@ -11,9 +11,7 @@ import SpriteKit
 enum GameState {
     case Title, Ready, Playing, Stop, GameOver
 }
-//enum BarState {
-//    case Up, Down, Stop
-//}
+
 
 
 class GameScene: SKScene {
@@ -21,9 +19,6 @@ class GameScene: SKScene {
     var touchedNode: SKNode! = nil
     var beard1:SKSpriteNode!
     var state: GameState = .Title
-    // var state: BarState = .Up
-    // var state: BarState = .Down
-    // var state: BarState = .Stop
     var spot1:SKSpriteNode!
     var spot2:SKSpriteNode!
     var spot3:SKSpriteNode!
@@ -38,12 +33,7 @@ class GameScene: SKScene {
             healthBar.xScale = health
         }
     }
-    var scoreLabel: SKLabelNode!
-    var points: CGFloat  = 0.0 {
-        didSet {
-            scoreLabel.text = String(points)
-        }
-    }
+  
     var growth: CGFloat = 1.0 {
         didSet {
         spot1.yScale = growth
@@ -65,12 +55,13 @@ class GameScene: SKScene {
     var alphaspot4:CGFloat = 1
     var sinceTouch : CFTimeInterval = 0
     let fixedDelta: CFTimeInterval = 1.0/60.0 /* 60 FPS */
-    var maskNode: SKNode?
+    //var maskNode: SKNode?
     var cropNode: SKCropNode = SKCropNode()
 
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
         beard1 = childNodeWithName("beard1") as! SKSpriteNode
+        addPointsLabels()
         spot1 = childNodeWithName("//spot1") as! SKSpriteNode
         spot2 = childNodeWithName("//spot2") as! SKSpriteNode
         spot3 = childNodeWithName("//spot3") as! SKSpriteNode
@@ -78,7 +69,6 @@ class GameScene: SKScene {
         healthBar = childNodeWithName("//healthBar") as! SKSpriteNode
         playButton = childNodeWithName("playButton") as! MSButtonNode
         restartButton = childNodeWithName("//restartButton") as! MSButtonNode
-        scoreLabel = self.childNodeWithName("scoreLabel") as! SKLabelNode
         levelTimerLabel = self.childNodeWithName("//levelTimerLabel") as! SKLabelNode
         //scoreLabel.text = String(points)
         //Play button
@@ -112,10 +102,29 @@ class GameScene: SKScene {
         let sequence = SKAction.sequence([wait, block])
         self.runAction(SKAction.repeatActionForever(sequence))
     
-    
+        loadHighscore()
+        
+        
     
     }
-    
+    func loadHighscore(){
+        let defaults = NSUserDefaults.standardUserDefaults()
+        let highscoreLabel = childNodeWithName("highscoreLabel")as! MLPointsLabel
+        highscoreLabel.setTo(defaults.integerForKey("highscore"))
+    }
+    func addPointsLabels(){
+        let pointsLabel = MLPointsLabel(num: 0)
+        let highscoreLabel = MLPointsLabel(num: 0)
+        pointsLabel.position = CGPointMake(20.0, view!.frame.size.height-35)
+        highscoreLabel.position = CGPointMake(view!.frame.size.height-35, view!.frame.size.height-35)
+        addChild(pointsLabel)
+        let highscoreTextLabel = SKLabelNode(text:"High")
+        highscoreTextLabel.fontColor = UIColor.blackColor()
+        highscoreTextLabel.fontSize = 14.0
+        highscoreTextLabel.fontName = "Helvetica"
+        highscoreTextLabel.position = CGPointMake(0, -20)
+        highscoreLabel.addChild(highscoreTextLabel)
+    }
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
          //Called when a touch begins
         if actionForKey("countdown") != nil {removeActionForKey("countdown")}
@@ -139,7 +148,6 @@ class GameScene: SKScene {
             
             let positionInScene = touch.locationInNode(self)
             touchedNode = self.nodeAtPoint(positionInScene)
-            
             if let name = touchedNode.name
             {
                 print(name)
@@ -161,25 +169,19 @@ class GameScene: SKScene {
                 default:
                     break;
                 }
-                if health >= 0.4 && health <= 0.6 {
-                    points += 5
-                    
-                }
-                else if health > 0.35 && health < 0.4 {
-                    points += 2
-                }
-                else if health > 0.6 && health < 0.65{
-                    points += 2
-                }
-                scoreLabel.text = String(points)
+//                if health >= 0.4 && health <= 0.6 {
+//                    points += 5
+//                    
+//                }
+//                else if health > 0.35 && health < 0.4 {
+//                    points += 2
+//                }
+//                else if health > 0.6 && health < 0.65{
+//                    points += 2
+//                }
             }
             
         }
-        //cropNode.maskNode = SKSpriteNode(imageNamed: "cockpitMask")
-//        cropNode.maskNode = SKSpriteNode(color: UIColor.blackColor(), size: CGSize(width: 100, height: 100))
-//        cropNode.addChild(touchedNode.parent!)
-//        self.addChild(cropNode)
-        //self.addChild(gameControlNodes)
 
     }
     
@@ -261,7 +263,23 @@ class GameScene: SKScene {
 beard1.runAction(SKAction.colorizeWithColor(UIColor.redColor(), colorBlendFactor: 1.0, duration: 0.50))
         
 sinceTouch+=fixedDelta
-    
+//        var name: String = 
+
+     let pointsLabel = childNodeWithName("pointsLabel") as! MLPointsLabel
+     let highscoreLabel = childNodeWithName("highscoreLabel") as! MLPointsLabel
+        if highscoreLabel.number < pointsLabel.number {
+            highscoreLabel.setTo(pointsLabel.number)
+            let defaults = NSUserDefaults.standardUserDefaults()
+            defaults.setInteger(highscoreLabel.number, forKey: "highscore")
+            
+        }
+        
+        
+        
+        
+        
+        
+        
 //    playButton.selectionHandler = {
 //        let skView = self.view as SKView!
 //    
@@ -270,7 +288,8 @@ sinceTouch+=fixedDelta
 //    
 //    }
 }
-
+    
+    
 
 
 
