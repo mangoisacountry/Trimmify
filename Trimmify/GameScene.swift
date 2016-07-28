@@ -16,7 +16,7 @@ enum GameState {
 
 class GameScene: SKScene {
     
-    var touchedNode: SKNode! = nil
+    var touchedNode: SKNode!
     var beard1:SKSpriteNode!
     var state: GameState = .Title
     var spot1:SKSpriteNode!
@@ -70,7 +70,6 @@ class GameScene: SKScene {
         playButton = childNodeWithName("playButton") as! MSButtonNode
         restartButton = childNodeWithName("//restartButton") as! MSButtonNode
         levelTimerLabel = self.childNodeWithName("//levelTimerLabel") as! SKLabelNode
-        //scoreLabel.text = String(points)
         //Play button
         playButton.selectedHandler = {
             
@@ -114,16 +113,19 @@ class GameScene: SKScene {
     }
     func addPointsLabels(){
         let pointsLabel = MLPointsLabel(num: 0)
+        pointsLabel.name = "pointsLabel"
         let highscoreLabel = MLPointsLabel(num: 0)
-        pointsLabel.position = CGPointMake(20.0, view!.frame.size.height-35)
-        highscoreLabel.position = CGPointMake(view!.frame.size.height-35, view!.frame.size.height-35)
+        highscoreLabel.name = "highscoreLabel"
+        pointsLabel.position = CGPointMake(200.0, 200)
+        highscoreLabel.position = CGPointMake(235, 235)
         addChild(pointsLabel)
         let highscoreTextLabel = SKLabelNode(text:"High")
         highscoreTextLabel.fontColor = UIColor.blackColor()
         highscoreTextLabel.fontSize = 14.0
         highscoreTextLabel.fontName = "Helvetica"
-        highscoreTextLabel.position = CGPointMake(0, -20)
+        highscoreTextLabel.position = CGPointMake(200, 200)
         highscoreLabel.addChild(highscoreTextLabel)
+        addChild(highscoreLabel)
     }
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
          //Called when a touch begins
@@ -135,7 +137,8 @@ class GameScene: SKScene {
             state = .Playing
         }
         
-        
+     let pointsLabel = childNodeWithName("pointsLabel") as! MLPointsLabel
+        pointsLabel.increment()
         for touch in touches {
         
             spot1.size.height -= 0.5
@@ -145,6 +148,7 @@ class GameScene: SKScene {
             spot3.size.height -= 0.2
             
             spot4.size.height -= 0.5
+            
             
             let positionInScene = touch.locationInNode(self)
             touchedNode = self.nodeAtPoint(positionInScene)
@@ -156,7 +160,6 @@ class GameScene: SKScene {
                 case "spot1":
                     spot1.size.height -= 10
                     spot1.position.y += 1
-                    print(spot1.size.height)
                 case "spot2":
                     spot2.size.height -= 10
                     spot2.position.y += 1
@@ -244,8 +247,11 @@ class GameScene: SKScene {
         if touchedNode == nil {
             return
         }
-        print(touchedNode.alpha)
-        if spot1.position.y < 77.110 || spot2.position.y < 77.110 || spot3.position.y < 77.110 || spot4.position.y < 77.110 || touchedNode.alpha <= 0.01   {
+        if spot1.position.y < 77.110 || spot2.position.y < 77.110 || spot3.position.y < 77.110 || spot4.position.y < 77.110 {
+            print("spot1:\(spot1.position.y)")
+            print("spot1:\(spot2.position.y)")
+            print("spot1:\(spot3.position.y)")
+            print("spot1:\(spot4.position.y)")
             gameOver()
         }
         
@@ -256,17 +262,14 @@ class GameScene: SKScene {
     func gameOver() {
     print("gameover!")
     state = .GameOver
-//    for node:spot 1 in beard1{
-//    node.runAction(SKAction.colorizeWithColor(UIColor.redColor(), colorBlendFactor: 1.0, duration: 0.50))
-//    }
     
 beard1.runAction(SKAction.colorizeWithColor(UIColor.redColor(), colorBlendFactor: 1.0, duration: 0.50))
         
 sinceTouch+=fixedDelta
-//        var name: String = 
-
+        
      let pointsLabel = childNodeWithName("pointsLabel") as! MLPointsLabel
      let highscoreLabel = childNodeWithName("highscoreLabel") as! MLPointsLabel
+        
         if highscoreLabel.number < pointsLabel.number {
             highscoreLabel.setTo(pointsLabel.number)
             let defaults = NSUserDefaults.standardUserDefaults()

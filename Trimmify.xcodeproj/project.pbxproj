@@ -31,7 +31,6 @@
 		152737B81D34649100ACDEC2 /* TrimmifyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152737B71D34649100ACDEC2 /* TrimmifyUITests.swift */; };
 		152737C81D356DB100ACDEC2 /* assets.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 152737C71D356DB100ACDEC2 /* assets.atlas */; };
 		1591359E1D496713008D780C /* MLPointsLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1591359D1D496713008D780C /* MLPointsLabel.swift */; };
-		159135A01D496D42008D780C /* delte this.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1591359F1D496D42008D780C /* delte this.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,7 +81,6 @@
 		152737B91D34649100ACDEC2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		152737C71D356DB100ACDEC2 /* assets.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = assets.atlas; sourceTree = "<group>"; };
 		1591359D1D496713008D780C /* MLPointsLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MLPointsLabel.swift; sourceTree = "<group>"; };
-		1591359F1D496D42008D780C /* delte this.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "delte this.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,7 +163,6 @@
 				152737931D34649100ACDEC2 /* AppDelegate.swift */,
 				152737951D34649100ACDEC2 /* GameScene.sks */,
 				152737971D34649100ACDEC2 /* GameScene.swift */,
-				1591359F1D496D42008D780C /* delte this.swift */,
 				1591359D1D496713008D780C /* MLPointsLabel.swift */,
 				152737C71D356DB100ACDEC2 /* assets.atlas */,
 				152737991D34649100ACDEC2 /* GameViewController.swift */,
@@ -336,7 +333,6 @@
 				1527379A1D34649100ACDEC2 /* GameViewController.swift in Sources */,
 				150B3F351D36F9FB007CE34C /* SKTTimingFunctions.swift in Sources */,
 				150B3F301D36F9FB007CE34C /* SKAction+SpecialEffects.swift in Sources */,
-				159135A01D496D42008D780C /* delte this.swift in Sources */,
 				150B3F2E1D36F9FB007CE34C /* Int+Extensions.swift in Sources */,
 				150B3F361D36F9FB007CE34C /* Vector3.swift in Sources */,
 				152737941D34649100ACDEC2 /* AppDelegate.swift in Sources */,
